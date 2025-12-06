@@ -1,0 +1,10 @@
+﻿<MatButton class="btn btn-primary"
+           Raised="true"
+           @onclick="OnClick">
+           @Text
+</MatButton>
+
+@code {
+    [Parameter] public string Text { get; set; } = "Aceptar";
+    [Parameter] public EventCallback OnClick { get; set; }
+}

@@ -1,0 +1,58 @@
+﻿/estilos base para horizontalizar el menú */
+.mat-nav-horizontal {
+    display: flex; /* hace que los items queden en fila */
+    gap: 1rem; /* separación entre items */
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.mat-nav-horizontal > ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mat-nav-horizontal > li {
+    list-style: none;
+    margin: 0;
+}
+
+.mat-nav-horizontal a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    text-decoration: none;
+}
+
+.custom-nav ul li:hover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5500cf;
+}
+
+.custom-nav ul .mdc-list-item--selected {
+    color: white;
+    background-color: #380089;
+}
+
+.custom-nav ul li a{
+    display: flex;
+    justify-content:center;
+    align-content: center;  
+    color: white;
+    text-decoration: none;
+}
+    
+@media (max-width: 768px) {
+    .mat-nav-horizontal {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .mat-nav-horizontal a {
+        padding: 0.6rem 1rem;
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+}

@@ -1,0 +1,10 @@
+﻿@page "/ventas"
+@inject NavigationManager Nav
+
+<GlobalCenterContainer>
+    <Content>
+        <h3 class="text-center"><span class="me-3">Ventas</span><PrimaryButton Text="Nuevo" OnClick="@(() => Nav.NavigateTo("/Ventas/Crear"))"></PrimaryButton></h3>
+        <p>Aquí se generarán órdenes de venta para los proveedores.</p>
+        
+    </Content>
+</GlobalCenterContainer>

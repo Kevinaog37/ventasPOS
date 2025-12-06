@@ -1,0 +1,12 @@
+﻿<div class="modal fade show" style="display:@(Show ? "block" : "none")">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool Show { get; set; }
+    [Parameter] public RenderFragment ?ChildContent { get; set; }
+}

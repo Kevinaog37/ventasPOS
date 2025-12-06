@@ -1,0 +1,25 @@
+﻿@page "/"
+@inject AuthViewModel ViewModel
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+
+<div class="shadow-sm text-center fs-3 mb-3 p-4">Bienvenido a POS-APP</div>
+<MatCard Class="w-25 mb-5 p-3">
+    <MatCardContent>
+        <MatTextField Label="Usuario" @bind-Value="ViewModel.Username" class="mb-3" />
+        <MatTextField Label="Contraseña" @bind-Value="ViewModel.Password" Type="password" class="mb-5" />
+
+        <PrimaryButton Text="Iniciar sesión" OnClick="usuarioLogin"></PrimaryButton>
+    </MatCardContent>
+</MatCard>
+
+@code {
+    private async Task usuarioLogin()
+    {
+        var success = await ViewModel.Login();
+        if (success)
+        {
+            NavigationManager.NavigateTo("/historial");
+        }
+    }
+}
