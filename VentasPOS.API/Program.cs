@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
-using VentasPOS.Application.Interfaces;
-using VentasPOS.Application.Services;
+using VentasPOS.Application.CasosUso.Usuarios;
+using VentasPOS.Application.Interfaces.Usuarios;
 using VentasPOS.Infraestructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,9 +28,19 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IDbConnection>(db =>
     new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Casos de uso
+builder.Services.AddScoped<CrearUsuario>();
+builder.Services.AddScoped<ObtenerUsuario>();
+builder.Services.AddScoped<ListarUsuario>();
+builder.Services.AddScoped<ActualizarUsuario>();
+builder.Services.AddScoped<EliminarUsuario>();
+
 // Dependencias
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IActualizarUsuario, ActualizarUsuario>();
+builder.Services.AddScoped<ICrearUsuario, CrearUsuario>();
+builder.Services.AddScoped<IObtenerUsuario, ObtenerUsuario>();
+
 
 var app = builder.Build();
 

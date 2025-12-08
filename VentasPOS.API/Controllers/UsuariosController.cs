@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VentasPOS.Application.DTO;
-using VentasPOS.Application.Interfaces;
+using VentasPOS.Application.CasosUso.Usuarios;
+using VentasPOS.Application.DTO.Usuarios;
 
 namespace VentasPOS.API.Controllers
 {
@@ -8,24 +8,37 @@ namespace VentasPOS.API.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly IUsuarioService _service;
+        private readonly CrearUsuario _crearUsuario;
+        private readonly ObtenerUsuario _obtenerUsuario;
+        private readonly ListarUsuario _listarUsuarios;
+        private readonly ActualizarUsuario _actualizarUsuario;
+        private readonly EliminarUsuario _eliminarUsuario;
 
-        public UsuariosController(IUsuarioService service)
+        public UsuariosController(
+            CrearUsuario crearUsuario,
+            ObtenerUsuario obtenerUsuario,
+            ListarUsuario listarUsuarios,
+            ActualizarUsuario actualizarUsuario,
+            EliminarUsuario eliminarUsuario)
         {
-            _service = service;
+            _crearUsuario = crearUsuario;
+            _obtenerUsuario = obtenerUsuario;
+            _listarUsuarios = listarUsuarios;
+            _actualizarUsuario = actualizarUsuario;
+            _eliminarUsuario = eliminarUsuario;
         }
 
         [HttpGet]
         public async Task<IActionResult> Listar()
         {
-            var res = await _service.Listar();
+            var res = await _listarUsuarios.Handle();
             return Ok(res);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("mostrar/{id}")]
         public async Task<IActionResult> Obtener(int id)
         {
-            var data = await _service.ObtenerPorId(id);
+            var data = await _obtenerUsuario.Handle(id);
             if (data == null) return NotFound();
             return Ok(data);
         }
@@ -33,16 +46,20 @@ namespace VentasPOS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Crear([FromBody] UsuarioCrearDto dto)
         {
-            var id = await _service.Crear(dto);
+            var id = await _crearUsuario.Handle(dto);
             return Ok(new { Id = id });
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Actualizar(int id, [FromBody] UsuarioCrearDto dto)
-            => Ok(await _service.Actualizar(id, dto));
+        [HttpPatch("actualizar/{id}")]
+        public async Task<IActionResult> Actualizar(int id, [FromBody] UsuarioActualizarDto dto)
+        {
+            return Ok(await _actualizarUsuario.Handle(id, dto));
+        }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("eliminar/{id}")]
         public async Task<IActionResult> Eliminar(int id)
-            => Ok(await _service.Eliminar(id));
+        {
+            return Ok(await _eliminarUsuario.Handle(id));
+        }
     }
 }

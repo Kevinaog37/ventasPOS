@@ -6,6 +6,6 @@
         public string ?Correo { get; set; } = string.Empty;
         public string ?Clave { get; set; } = string.Empty;
         public DateTime ?FechaNacimiento { get; set; }
-        public string Rol { get; set; } = string.Empty;
+        public string Rol { get; set; } = "3";
     }
 }

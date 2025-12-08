@@ -1,5 +1,72 @@
-﻿<h3>Ver</h3>
+﻿@page "/usuarios/mostrar/"
+@page "/usuarios/mostrar/{userId:int}"
+@inject UsuarioEditarViewModel VM
+@inject NavigationManager Nav
+
+<GlobalCenterContainer>
+    <Content>
+        @if (VM.Usuario.Id != null)
+        {
+
+            <h3 class="text-center"><span class="me-3">Actualizar usuario</span><PrimaryButton Text="Ver listado" OnClick="@(() => Nav.NavigateTo("/usuarios"))"></PrimaryButton></h3>
+
+            <EditForm Model="@VM" OnValidSubmit="@usuarioActualizar">
+                <DataAnnotationsValidator />
+
+                <input type="hidden" @bind="VM.Usuario.Nombre" />
+
+                <MatCard Class="pa-4">
+                    <MatTextField @bind-Value="VM.Usuario.Nombre" Label="Nombre" Icon="person" Required="true" Class="mb-3" />
+                    <MatTextField @bind-Value="VM.Usuario.Correo" Label="Correo" Icon="email" Type="email" Required="true" Class="mb-3" />
+                    <MatSelect Label="Rol" @bind-Value="VM.Usuario.Rol" Required="true" Class="mb-3">
+                        <MatOption Value='"1"'>Admin</MatOption>
+                        <MatOption Value='"2"'>Vendedor</MatOption>
+                        <MatOption Value='"3"'>Cliente</MatOption>
+                        <MatOption Value='"4"'>Proveedor</MatOption>
+                    </MatSelect>
+
+                    <MatDatePicker @bind-Value="VM.Usuario.FechaNacimiento" Label="Fecha de nacimiento" Class="mb-3" />
+
+                    <div class="d-flex justify-content-center align-items-center mt-3 mb-3">
+                        <MatButton ButtonType="MatButtonType.Submit" Raised="true" Icon="save" Class="me-3">
+                            Actualizar
+                        </MatButton>
+                    </div>
+
+
+                    @if (VM.Alerta == "1")
+                    {
+                        <div class="alert alert-success">@VM.Mensaje</div>
+                    }
+                    else if(VM.Alerta == "2")
+                    {
+                        <div class="alert alert-danger">@VM.Mensaje</div>
+
+                    }
+                </MatCard>
+            </EditForm>
+        }
+        else
+        {
+            <div class="alert alert-warning">No se ha encontrado el usuario.</div>
+        }
+    </Content>
+</GlobalCenterContainer>
 
 @code {
+    [Parameter]
+    public int? userId { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        if (userId != null)
+        {
+            await VM.Mostrar(userId.Value);
+        }
+    }
+
+    public async Task usuarioActualizar()
+    {
+        await VM.Actualizar();
+    }
 }

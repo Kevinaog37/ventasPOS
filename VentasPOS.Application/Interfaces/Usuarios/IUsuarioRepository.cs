@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VentasPOS.Domain.Entities;
-
-namespace VentasPOS.Application.Interfaces
+﻿using VentasPOS.Domain.Entities;
+namespace VentasPOS.Application.Interfaces.Usuarios
 {
     public interface IUsuarioRepository
     {

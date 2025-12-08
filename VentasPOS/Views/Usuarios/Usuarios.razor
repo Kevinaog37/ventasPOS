@@ -1,6 +1,6 @@
 ﻿@page "/usuarios"
 @inject NavigationManager Nav
-@inject UsuarioViewModel VM
+@inject UsuarioListarViewModel VM
 
 <GlobalCenterContainer>
     <Content>
@@ -11,14 +11,39 @@
                 <MatTableHeader>
                     <td>Nombre</td>
                     <td>Correo</td>
+                    <td>Rol</td>
                     <td>Fecha de nacimiento</td>
+                    <td></td>
                 </MatTableHeader>
 
                 <MatTableRow>
                     <td>@context.Nombre</td>
                     <td>@context.Correo</td>
+                    <td>
+                        @switch (context.Rol)
+                        {
+                            case "1":
+                                @:Admin
+                                break;
+                            case "2":
+                                @:Vendedor
+                                break;
+                            case "3":
+                                @:Cliente
+                                break;
+                            case "4":
+                            @:Proveedor
+                                break;
+                            default:
+                                @:---
+                                break;
+                        }
+                    </td>
                     <td>@context.FechaNacimiento</td>
-                    <td><PrimaryButton Text="Editar" OnClick="@(() => Nav.NavigateTo("/usuarios/"+context.Id))"></PrimaryButton></td>
+                    <td>
+                        <PrimaryButton Text="Ver" OnClick="@(() => Nav.NavigateTo("/usuarios/mostrar/" + context.Id))"></PrimaryButton>
+                        <PrimaryButton Text="Eliminar" OnClick="@(async () => await usuarioEliminar(context.Id))"></PrimaryButton>
+                    </td>
                 </MatTableRow>
             </MatTable>
         }
@@ -33,5 +58,13 @@
     protected override async Task OnInitializedAsync()
     {
         await VM.Listar();
+    }
+
+    public async Task usuarioEliminar(int id)
+    {
+        await VM.Eliminar(id);
+        await VM.Listar();
+        StateHasChanged();
+        
     }
 }

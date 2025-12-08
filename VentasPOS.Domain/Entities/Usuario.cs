@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VentasPOS.Domain.Entities
+﻿namespace VentasPOS.Domain.Entities
 {
     public class Usuario
     {
@@ -13,6 +7,6 @@ namespace VentasPOS.Domain.Entities
         public string ?Correo { get; set; }
         public string ?Clave { get; set; }
         public DateTime FechaNacimiento { get; set; }
-        public string ?Rol { get; set; }
+        public string ?IdRol { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace VentasPOS.Services.Auth
 
         public async Task<bool> Login(LoginRequest request)
         {
-            var response = await _http.PostAsJsonAsync("api/auth/login", request);
+            var response = await _http.PostAsJsonAsync("auth/login", request);
 
             //return response.IsSuccessStatusCode;
             return true;

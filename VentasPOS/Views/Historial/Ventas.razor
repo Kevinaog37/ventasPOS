@@ -1,0 +1,34 @@
+﻿@page "/historial"
+@inject VentaListarViewModel VM
+@inject NavigationManager Nav
+<GlobalCenterContainer>
+    <Content>
+        <h3 class="text-center"><span class="me-3">Ventas</span><PrimaryButton Text="Nueva" OnClick="@(() => Nav.NavigateTo("/ventas/crear"))"></PrimaryButton></h3>
+        @if (VM._listVentas.Count > 0)
+        {
+            <MatTable Items="VM._listVentas">
+                <MatTableHeader>
+                    <td>Nombre</td>
+                    <td>Correo</td>
+                    <td>Rol</td>
+                    <td>Fecha de nacimiento</td>
+                    <td></td>
+                </MatTableHeader>
+
+                <MatTableRow>
+                    <td>@context.NombreCliente</td>
+                    <td>@context.NombreProveedor</td>
+                    <td>@context.Valor</td>
+                    <td>@context.Fecha</td>
+                    <td>
+                        <PrimaryButton Text="Ver" OnClick="@(() => Nav.NavigateTo("/ventas/mostrar/" + context.Id))"></PrimaryButton>
+                    </td>
+                </MatTableRow>
+            </MatTable>
+        }
+        else
+        {
+            <div class="alert alert-warning">No hay ventas para listar.</div>
+        }
+    </Content>
+</GlobalCenterContainer>

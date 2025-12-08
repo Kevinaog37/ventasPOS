@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VentasPOS.Application.Interfaces;
+﻿using System.Data;
 using VentasPOS.Domain.Entities;
 using Dapper;
+using VentasPOS.Application.Interfaces.Usuarios;
 
 namespace VentasPOS.Infraestructure.Repositories
 {
@@ -23,28 +18,18 @@ namespace VentasPOS.Infraestructure.Repositories
         {
             try
             {
-                return await _db.QueryAsync<Usuario>(
-                                "sp_ListarUsuarios",
-                                commandType: CommandType.StoredProcedure
-                            );
+                return await _db.QueryAsync<Usuario>("sp_ListarUsuarios", commandType: CommandType.StoredProcedure);
             }
-            catch (Exception ex) { 
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex.Message);
                 return Enumerable.Empty<Usuario>();
             }
-            
-            /*await Task.Delay(0);
-            return new List<Usuario>
-            {
-                new Usuario{Id = 1, Nombre="Kevin", Clave ="lllll", FechaNacimiento = DateTime.Parse("2010-12-01"), Correo = "Pruebas@gmail.com", Rol="1"},
-                new Usuario{Id = 1, Nombre="Arlex", Clave ="newhas20311", FechaNacimiento = DateTime.Parse("2001-06-05"), Correo = "Arlex@gmail.com", Rol="2"},
-                new Usuario{Id = 1, Nombre="Pruebas", Clave ="kzjsdasdlla", FechaNacimiento = DateTime.Parse("2001-06-05"), Correo = "Arlex@gmail.com", Rol="3"},
-            };*/
         }
 
         public async Task<Usuario?> ObtenerPorId(int id)
         {
-            var sql = "SELECT * FROM Usuarios WHERE Id = @Id";
+            var sql = $"EXEC dbo.sp_ObtenerUsuarioPorId {id}";
             return await _db.QueryFirstOrDefaultAsync<Usuario>(sql, new { Id = id });
         }
 
@@ -60,35 +45,58 @@ namespace VentasPOS.Infraestructure.Repositories
                                 usuario.Correo,
                                 usuario.Clave,
                                 usuario.FechaNacimiento,
-                                usuario.Rol
+                                usuario.IdRol
                             },
                             commandType: CommandType.StoredProcedure
                         );
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message.ToString() ); 
+                Console.WriteLine(ex.Message.ToString());
                 return -1;
             }
-            
+
         }
 
         public async Task<bool> Actualizar(Usuario usuario)
         {
-            var sql = @"UPDATE Usuarios SET
-                    Nombre = @Nombre,
-                    Correo = @Correo,
-                    ClaveHash = @ClaveHash,
-                    FechaNacimiento = @FechaNacimiento,
-                    Rol = @Rol
-                    WHERE Id = @Id";
-            return await _db.ExecuteAsync(sql, usuario) > 0;
+            try
+            {
+                Console.WriteLine("Se ejecutó");
+                var res = await _db.ExecuteAsync(
+                            "sp_ActualizarUsuario",
+                                new
+                                {
+                                    usuario.Id,
+                                    usuario.Nombre,
+                                    usuario.Correo,
+                                    usuario.FechaNacimiento,
+                                    usuario.IdRol
+                                },
+                                commandType: CommandType.StoredProcedure
+                            );
+                Console.WriteLine("Conteo: " + usuario.Id);
+                return res > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("No se ejecutó");
+
+                Console.WriteLine (ex.Message.ToString());
+                return false;
+            }
+
         }
 
         public async Task<bool> Eliminar(int id)
         {
-            var sql = "DELETE FROM Usuarios WHERE Id = @Id";
-            return await _db.ExecuteAsync(sql, new { Id = id }) > 0;
+            try
+            {
+                return await _db.ExecuteAsync("sp_EliminarUsuario", new { Id = id }, commandType: CommandType.StoredProcedure) > 0;
+
+            }catch(Exception ex) {
+                Console.WriteLine(ex.Message.ToString()); return false;
+            }
         }
     }
 }
