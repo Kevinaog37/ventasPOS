@@ -17,6 +17,7 @@ namespace VentasPOS.Application.CasosUso.Usuarios
             try
             {
                 var usuario = await _repo.ObtenerPorId(id);
+                Console.WriteLine("Correo del usaur " + usuario.Correo);
                 return res = new UsuarioMostrarDto {Id = id, Nombre = usuario.Nombre, Correo = usuario.Correo, FechaNacimiento = usuario.FechaNacimiento, Rol = usuario.IdRol };
 
             }

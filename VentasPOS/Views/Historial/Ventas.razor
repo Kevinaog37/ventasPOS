@@ -8,17 +8,14 @@
         {
             <MatTable Items="VM._listVentas">
                 <MatTableHeader>
-                    <td>Nombre</td>
-                    <td>Correo</td>
-                    <td>Rol</td>
-                    <td>Fecha de nacimiento</td>
-                    <td></td>
+                    <td>Cliente</td>
+                    <td>Proveedor</td>
+                    <td>Fecha</td>
                 </MatTableHeader>
 
                 <MatTableRow>
                     <td>@context.NombreCliente</td>
                     <td>@context.NombreProveedor</td>
-                    <td>@context.Valor</td>
                     <td>@context.Fecha</td>
                     <td>
                         <PrimaryButton Text="Ver" OnClick="@(() => Nav.NavigateTo("/ventas/mostrar/" + context.Id))"></PrimaryButton>
@@ -32,3 +29,10 @@
         }
     </Content>
 </GlobalCenterContainer>
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        await VM.Listar();
+    }
+}

@@ -24,6 +24,7 @@ builder.Services.AddScoped<UsuarioCrearViewModel>();
 builder.Services.AddScoped<UsuarioEditarViewModel>();
 //Ventas 
 builder.Services.AddScoped<VentaListarViewModel>();
+builder.Services.AddScoped<VentaCrearViewModel>();
 
 //[Services]
 //Auth
@@ -31,7 +32,7 @@ builder.Services.AddScoped<AuthService>();
 //Usuario
 builder.Services.AddScoped<UserSessionService>();
 builder.Services.AddScoped<UsuarioService>();
-//Vebtas
+//Ventas
 builder.Services.AddScoped<VentaService>();
 
 

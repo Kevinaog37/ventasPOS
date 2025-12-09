@@ -1,9 +1,56 @@
 ﻿@page "/ventas/crear"
+@inject VentaCrearViewModel VM
 @inject NavigationManager Nav
 
 <GlobalCenterContainer>
     <Content>
-   
-        
+        <EditForm Model="@VM" OnValidSubmit="@VM.Guardar">
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-floating">
+                        <select class="form-control" @bind="VM.Venta.IdUsuarioCliente">
+                            @foreach (var cliente in VM.ListaCliente)
+                            {
+                                <option value="@cliente.Id">@cliente.Nombre</option>
+                            }
+                        </select>
+                        <label>Cliente</label>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-floating">
+                        <select class="form-control" @bind="VM.Venta.IdUsuarioProveedor">
+                            @foreach (var proveedor in VM.ListaProveedor)
+                            {
+                                <option value="@proveedor.Id">@proveedor.Nombre</option>
+                            }
+                        </select>
+                        <label>Proveedor</label>
+                    </div>
+                </div>
+
+
+                <div class="col-3">
+                    <div class="form-floating">
+                        <input class="form-control" disabled @bind="VM.Venta.Fecha" />
+
+                        <label>Fecha</label>
+                    </div>
+                </div>
+
+                <div class="col-3 d-flex justify-content-center align-items-center">
+                    <PrimaryButton Text="Nueva venta"></PrimaryButton>
+                </div>
+
+            </div>
+        </EditForm>
+
     </Content>
 </GlobalCenterContainer>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await VM.cargarUsuarios();
+    }
+}

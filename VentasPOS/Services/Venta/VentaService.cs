@@ -16,7 +16,7 @@ namespace VentasPOS.Services.Venta
         {
             try
             {
-                var usuarios = await _http.GetFromJsonAsync<IEnumerable<VentaListarDto>>("Usuarios");
+                var usuarios = await _http.GetFromJsonAsync<IEnumerable<VentaListarDto>>("Ventas");
                 return usuarios?.ToList() ?? new List<VentaListarDto>();
             }
             catch (Exception ex)
@@ -24,6 +24,12 @@ namespace VentasPOS.Services.Venta
                 Console.WriteLine(ex.Message);
                 return new List<VentaListarDto>();
             }
+        }
+
+        public async Task<bool> Insertar(VentaCrearDto request)
+        {
+            var response = await _http.PostAsJsonAsync("Ventas", request);
+            return response.IsSuccessStatusCode;
         }
     }
 }

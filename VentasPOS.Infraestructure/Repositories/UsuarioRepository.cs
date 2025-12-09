@@ -29,6 +29,7 @@ namespace VentasPOS.Infraestructure.Repositories
 
         public async Task<Usuario?> ObtenerPorId(int id)
         {
+            Console.WriteLine($"Entró con el id: {id}");
             var sql = $"EXEC dbo.sp_ObtenerUsuarioPorId {id}";
             return await _db.QueryFirstOrDefaultAsync<Usuario>(sql, new { Id = id });
         }
@@ -62,7 +63,6 @@ namespace VentasPOS.Infraestructure.Repositories
         {
             try
             {
-                Console.WriteLine("Se ejecutó");
                 var res = await _db.ExecuteAsync(
                             "sp_ActualizarUsuario",
                                 new
@@ -80,8 +80,6 @@ namespace VentasPOS.Infraestructure.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine("No se ejecutó");
-
                 Console.WriteLine (ex.Message.ToString());
                 return false;
             }

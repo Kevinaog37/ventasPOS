@@ -9,7 +9,5 @@
         public string NombreProveedor { get; set; }
         public DateTime Fecha { get; set; }
         public int Estado { get; set; }
-        public decimal Valor {  get; set; }
-
     }
 }
