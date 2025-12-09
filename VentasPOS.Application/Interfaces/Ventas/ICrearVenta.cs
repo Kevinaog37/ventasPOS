@@ -4,6 +4,6 @@ namespace VentasPOS.Application.Interfaces.Ventas
 {
     public interface ICrearVenta
     {
-        Task<int> Handle(VentaCrearDto usuarioCrearDto);
+        Task<int> Handle(VentaCrearDto ventaCrearDto);
     }
 }

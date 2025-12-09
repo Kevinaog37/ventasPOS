@@ -1,7 +1,10 @@
-﻿using System.Data;
+﻿using ComprasPOS.Infraestructure.Repositories;
 using Microsoft.Data.SqlClient;
+using System.Data;
+using VentasPOS.Application.CasosUso.Compras;
 using VentasPOS.Application.CasosUso.Usuarios;
 using VentasPOS.Application.CasosUso.Ventas;
+using VentasPOS.Application.Interfaces.Compras;
 using VentasPOS.Application.Interfaces.Usuarios;
 using VentasPOS.Application.Interfaces.Ventas;
 using VentasPOS.Infraestructure.Repositories;
@@ -45,7 +48,12 @@ builder.Services.AddScoped<ActualizarVenta>();
 builder.Services.AddScoped<EliminarVenta>();
 builder.Services.AddScoped<ObtenerVenta>();
 
-
+//Compras
+builder.Services.AddScoped<ListarCompras>();
+builder.Services.AddScoped<CrearCompra>();
+builder.Services.AddScoped<ActualizarCompra>();
+builder.Services.AddScoped<EliminarCompra>();
+builder.Services.AddScoped<ObtenerCompra>();
 
 
 // [Dependencias]
@@ -61,6 +69,13 @@ builder.Services.AddScoped<IListarVentas, ListarVentas>();
 builder.Services.AddScoped<ICrearVenta, CrearVenta>();
 builder.Services.AddScoped<IActualizarVenta, ActualizarVenta>();
 builder.Services.AddScoped<IObtenerVenta, ObtenerVenta>();
+
+//Compras
+builder.Services.AddScoped<ICompraRepository, CompraRepository>();
+builder.Services.AddScoped<IListarCompras, ListarCompras>();
+builder.Services.AddScoped<ICrearCompra, CrearCompra>();
+builder.Services.AddScoped<IActualizarCompra, ActualizarCompra>();
+builder.Services.AddScoped<IObtenerCompra, ObtenerCompra>();
 
 
 var app = builder.Build();

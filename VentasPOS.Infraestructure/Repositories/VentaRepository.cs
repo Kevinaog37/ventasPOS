@@ -94,9 +94,5 @@ namespace VentasPOS.Infraestructure.Repositories
                 Console.WriteLine(ex.Message.ToString()); return false;
             }
         }
-
-
-
-
     }
 }
