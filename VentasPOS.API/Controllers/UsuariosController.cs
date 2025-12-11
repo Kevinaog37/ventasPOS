@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VentasPOS.Application.CasosUso.Usuarios;
 using VentasPOS.Application.DTO.Usuarios;
+using VentasPOS.Application.Interfaces.Usuarios;
 
 namespace VentasPOS.API.Controllers
 {
@@ -8,18 +9,18 @@ namespace VentasPOS.API.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly CrearUsuario _crearUsuario;
-        private readonly ObtenerUsuario _obtenerUsuario;
-        private readonly ListarUsuario _listarUsuarios;
-        private readonly ActualizarUsuario _actualizarUsuario;
-        private readonly EliminarUsuario _eliminarUsuario;
+        private readonly ICrearUsuario _crearUsuario;
+        private readonly IObtenerUsuario _obtenerUsuario;
+        private readonly IListarUsuario _listarUsuarios;
+        private readonly IActualizarUsuario _actualizarUsuario;
+        private readonly IEliminarUsuario _eliminarUsuario;
 
         public UsuariosController(
-            CrearUsuario crearUsuario,
-            ObtenerUsuario obtenerUsuario,
-            ListarUsuario listarUsuarios,
-            ActualizarUsuario actualizarUsuario,
-            EliminarUsuario eliminarUsuario)
+            ICrearUsuario crearUsuario,
+            IObtenerUsuario obtenerUsuario,
+            IListarUsuario listarUsuarios,
+            IActualizarUsuario actualizarUsuario,
+            IEliminarUsuario eliminarUsuario)
         {
             _crearUsuario = crearUsuario;
             _obtenerUsuario = obtenerUsuario;

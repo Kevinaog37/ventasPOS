@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VentasPOS.Application.CasosUso.Usuarios;
 using VentasPOS.Application.CasosUso.Compras;
 using VentasPOS.Application.DTO.Compras;
+using VentasPOS.Application.Interfaces.Compras;
 
 namespace ComprasPOS.API.Controllers
 {
@@ -9,13 +9,13 @@ namespace ComprasPOS.API.Controllers
     [ApiController]
     public class ComprasController : ControllerBase
     {
-        private readonly ListarCompras _listarCompras;
-        private readonly CrearCompra _crearCompra;
-        private readonly ObtenerCompra _obtenerCompra;
-        private readonly ActualizarCompra _actualizarCompra;
-        private readonly EliminarCompra _eliminarCompra;
+        private readonly IListarCompras _listarCompras;
+        private readonly ICrearCompra _crearCompra;
+        private readonly IObtenerCompra _obtenerCompra;
+        private readonly IActualizarCompra _actualizarCompra;
+        private readonly IEliminarCompra _eliminarCompra;
 
-        public ComprasController(ListarCompras listarCompras, CrearCompra crearCompra, ObtenerCompra obtenerCompra, ActualizarCompra actualizarCompra, EliminarCompra eliminarCompra)
+        public ComprasController(IListarCompras listarCompras, ICrearCompra crearCompra, IObtenerCompra obtenerCompra, IActualizarCompra actualizarCompra, IEliminarCompra eliminarCompra)
         {
             _listarCompras = listarCompras;
             _crearCompra = crearCompra;

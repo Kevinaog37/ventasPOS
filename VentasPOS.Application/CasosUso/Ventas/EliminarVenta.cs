@@ -8,7 +8,7 @@ using VentasPOS.Application.Interfaces.Ventas;
 
 namespace VentasPOS.Application.CasosUso.Ventas
 {
-    public class EliminarVenta
+    public class EliminarVenta : IEliminarVenta
     {   
         private readonly IVentaRepository _repo; 
 

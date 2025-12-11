@@ -1,5 +1,4 @@
 ﻿using VentasPOS.Application.DTO.Ventas;
-
 using VentasPOS.Application.Interfaces.Ventas;
 using VentasPOS.Domain.Entities;
 

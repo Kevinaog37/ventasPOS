@@ -4,7 +4,7 @@ using VentasPOS.Domain.Entities;
 
 namespace VentasPOS.Application.CasosUso.Usuarios
 {
-    public class ListarUsuario
+    public class ListarUsuario:IListarUsuario
     {
         private readonly IUsuarioRepository _repo;
 

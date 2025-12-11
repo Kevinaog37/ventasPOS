@@ -1,9 +1,7 @@
 ﻿using VentasPOS.Application.Interfaces.Compras;
-using VentasPOS.Application.Interfaces.Usuarios;
-
 namespace VentasPOS.Application.CasosUso.Compras
 {
-    public class EliminarCompra
+    public class EliminarCompra : IEliminarCompra
     {
         private readonly ICompraRepository _repo;
 

@@ -2,6 +2,7 @@
 using VentasPOS.Application.CasosUso.Usuarios;
 using VentasPOS.Application.CasosUso.Ventas;
 using VentasPOS.Application.DTO.Ventas;
+using VentasPOS.Application.Interfaces.Ventas;
 
 namespace VentasPOS.API.Controllers
 {
@@ -9,13 +10,13 @@ namespace VentasPOS.API.Controllers
     [ApiController]
     public class VentasController : ControllerBase
     {
-        private readonly ListarVentas _listarVentas;
-        private readonly CrearVenta _crearVenta;
-        private readonly ObtenerVenta _obtenerVenta;
-        private readonly ActualizarVenta _actualizarVenta;
-        private readonly EliminarVenta _eliminarVenta;
+        private readonly IListarVentas _listarVentas;
+        private readonly ICrearVenta _crearVenta;
+        private readonly IObtenerVenta _obtenerVenta;
+        private readonly IActualizarVenta _actualizarVenta;
+        private readonly IEliminarVenta _eliminarVenta;
 
-        public VentasController(ListarVentas listarVentas, CrearVenta crearVenta, ObtenerVenta obtenerVenta, ActualizarVenta actualizarVenta, EliminarVenta eliminarVenta)
+        public VentasController(IListarVentas listarVentas, ICrearVenta crearVenta, IObtenerVenta obtenerVenta, IActualizarVenta actualizarVenta, IEliminarVenta eliminarVenta)
         {
             _listarVentas = listarVentas;
             _crearVenta = crearVenta;

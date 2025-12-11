@@ -8,7 +8,7 @@ using VentasPOS.Application.Interfaces.Usuarios;
 
 namespace VentasPOS.Application.CasosUso.Usuarios
 {
-    public class EliminarUsuario
+    public class EliminarUsuario : IEliminarUsuario
     {
         private readonly IUsuarioRepository _repo;
 

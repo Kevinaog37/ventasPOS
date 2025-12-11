@@ -75,7 +75,6 @@ namespace VentasPOS.Infraestructure.Repositories
                                 },
                                 commandType: CommandType.StoredProcedure
                             );
-                Console.WriteLine("Conteo: " + usuario.Id);
                 return res > 0;
             }
             catch (Exception ex)
