@@ -1,4 +1,4 @@
-﻿namespace VentasPOS.DTO.Auth
+﻿namespace VentasPOS.Application.DTO.Auth
 {
     public class LoginRequest
     {

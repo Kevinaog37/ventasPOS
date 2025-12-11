@@ -1,11 +1,15 @@
 ﻿using ComprasPOS.Infraestructure.Repositories;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using VentasPOS.Application.CasosUso.Auth;
 using VentasPOS.Application.CasosUso.Compras;
+using VentasPOS.Application.CasosUso.DetalleCompras;
 using VentasPOS.Application.CasosUso.DetalleVentas;
 using VentasPOS.Application.CasosUso.Usuarios;
 using VentasPOS.Application.CasosUso.Ventas;
+using VentasPOS.Application.Interfaces.Auth;
 using VentasPOS.Application.Interfaces.Compras;
+using VentasPOS.Application.Interfaces.DetalleCompras;
 using VentasPOS.Application.Interfaces.DetalleVentas;
 using VentasPOS.Application.Interfaces.Usuarios;
 using VentasPOS.Application.Interfaces.Ventas;
@@ -31,6 +35,10 @@ builder.Services.AddCors(options =>
 // DB
 builder.Services.AddScoped<IDbConnection>(db =>
     new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// ===== Auth ===== 
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<Login>();
 
 // ===== Usuarios =====
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
@@ -62,6 +70,14 @@ builder.Services.AddScoped<IInsertarDetalleVentas, InsertarDetalleVentas>();
 builder.Services.AddScoped<IListarDetalleVentas, ListarDetalleVentas>();
 builder.Services.AddScoped<IActualizarDetalleVentas, ActualizarDetalleVentas>();
 builder.Services.AddScoped<EliminarDetalleVentas>();
+
+// ===== DetalleCompras =====
+builder.Services.AddScoped<IDetalleCompraRepository, DetalleCompraRepository>();
+builder.Services.AddScoped<IInsertarDetalleCompras, InsertarDetalleCompras>();
+builder.Services.AddScoped<IListarDetalleCompras, ListarDetalleCompras>();
+builder.Services.AddScoped<IActualizarDetalleCompra, ActualizarDetalleCompras>();
+builder.Services.AddScoped<EliminarDetalleCompras>();
+
 
 var app = builder.Build();
 

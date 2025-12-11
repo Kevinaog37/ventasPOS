@@ -29,7 +29,6 @@ namespace VentasPOS.Infraestructure.Repositories
 
         public async Task<Usuario?> ObtenerPorId(int id)
         {
-            Console.WriteLine($"Entró con el id: {id}");
             var sql = $"EXEC dbo.sp_ObtenerUsuarioPorId {id}";
             return await _db.QueryFirstOrDefaultAsync<Usuario>(sql, new { Id = id });
         }

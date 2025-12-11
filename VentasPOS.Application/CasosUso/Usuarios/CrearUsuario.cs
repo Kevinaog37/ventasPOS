@@ -15,7 +15,7 @@ namespace VentasPOS.Application.CasosUso.Usuarios
 
         public async Task<int> Handle(UsuarioCrearDto dto)
         {
-            var usuario = new Usuario { Nombre = dto.Nombre,Correo = dto.Correo,Clave = dto.Clave, FechaNacimiento = dto.FechaNacimiento, IdRol = dto.Rol };
+            var usuario = new Usuario { Nombre = dto.Nombre,Correo = dto.Correo,Clave = BCrypt.Net.BCrypt.HashPassword(dto.Clave), FechaNacimiento = dto.FechaNacimiento, IdRol = dto.Rol };
             return await _repo.Crear(usuario);
         }
     }

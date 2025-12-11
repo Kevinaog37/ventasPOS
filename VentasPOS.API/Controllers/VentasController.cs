@@ -28,7 +28,6 @@ namespace VentasPOS.API.Controllers
         [HttpGet]
         public async Task <IActionResult> Listar()
         {
-            Console.WriteLine("VentaController");
             var res = await _listarVentas.Handle();
             return Ok(res);
         }

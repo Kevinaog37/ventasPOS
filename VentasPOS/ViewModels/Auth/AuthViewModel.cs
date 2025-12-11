@@ -6,29 +6,25 @@ namespace VentasPOS.ViewModels.Auth
     public class AuthViewModel
     {
         private readonly AuthService _authService;
-        private readonly UserSessionService _userSession;
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public LoginRequest LoginRequest { get; set; } = new LoginRequest();
 
-        public bool IsLoginSuccessful { get; private set; } = false;
-
-        public AuthViewModel(AuthService authService, UserSessionService userSession)
+        public AuthViewModel(AuthService authService)
         {
             _authService = authService;
-            _userSession = userSession;
         }
 
-        public async Task<bool> Login()
+        public async Task<bool> validarSesion()
         {
-            var request = new LoginRequest { Username = Username, Password = Password };
-            IsLoginSuccessful = await _authService.Login(request);
-
-            if (IsLoginSuccessful)
-            {
-                _userSession.SetUser(Username);
-            }
-
-            return IsLoginSuccessful;
+            return await _authService.EstaLogueado();
         }
+
+        public async Task<bool> IniciarSesion()
+        {
+            var response = await _authService.Login(LoginRequest);
+            LoginRequest = new();
+            return response;
+        }
+
+        
     }
 }

@@ -1,18 +1,22 @@
 ﻿@inherits LayoutComponentBase
-@inject UserSessionService Session
+@inject AuthService Session
+@inject NavigationManager Nav
 @using MatBlazor
+@using VentasPOS.DTO.Auth
 
 <MatAppBarContainer>
     <MatAppBar>
         <MatTabBar class="d-flex justify-content-between align-items-center py-2 px-5">
             <div class="me-3 d-flex justify-content-between align-items-center">VentasPOS</div>
-            <div class="me-3 d-flex justify-content-between align-items-center">Usuario: @Session.Username</div>
+            <div class="me-3 d-flex justify-content-between align-items-center">Usuario: @Usuario.NombreUsuario</div>
             <MatNavMenu Class="custom-nav mat-nav-horizontal">
                 <MatNavItem Title="Historial" Href="/historial">Historial</MatNavItem>
                 <MatNavItem Title="Compras" Href="/compras">Compras</MatNavItem>
                 <MatNavItem Title="Ventas" Href="/ventas/crear">Ventas</MatNavItem>
                 <MatNavItem Title="Usuarios" Href="/usuarios">Usuarios</MatNavItem>
+                <MatNavItem Title="Salir" OnClick="@salir">Salir<MatIcon Icon="arrow_right_alt"></MatIcon></MatNavItem>
             </MatNavMenu>
+            
         </MatTabBar>
     </MatAppBar>
 </MatAppBarContainer>
@@ -22,3 +26,21 @@
         @Body
     </div>
 </div>
+@code{
+    private UsuarioStorageDto? Usuario = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Session.ObtenerStorage();
+        if (response != null)
+        {
+            Usuario = response;
+        }
+    }
+
+    private async Task salir()
+    {
+        await Session.Logout();
+        Nav.NavigateTo("/");
+    }
+}

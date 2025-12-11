@@ -28,12 +28,6 @@ namespace VentasPOS.API.Controllers
             var result = await _listarDetalleVentas.Handle(IdVenta);
             return result;
         }
-        /*
-        [HttpGet("{id}")]
-        public string ObtenerPorId(int id)
-        {
-            return "value";
-        }*/
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DetalleVentaInsertarDto detalleVenta)

@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using VentasPOS;
@@ -29,8 +30,9 @@ builder.Services.AddScoped<VentaCrearViewModel>();
 //[Services]
 //Auth
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddBlazoredLocalStorage();
+
 //Usuario
-builder.Services.AddScoped<UserSessionService>();
 builder.Services.AddScoped<UsuarioService>();
 //Ventas
 builder.Services.AddScoped<VentaService>();
