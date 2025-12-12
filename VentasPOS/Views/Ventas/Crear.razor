@@ -1,56 +1,120 @@
 ﻿@page "/ventas/crear"
+@using VentasPOS.DTO.DetalleVenta
 @inject VentaCrearViewModel VM
 @inject NavigationManager Nav
 
 <GlobalCenterContainer>
     <Content>
-        <EditForm Model="@VM" OnValidSubmit="@VM.Guardar">
-            <div class="row">
-                <div class="col-3">
-                    <div class="form-floating">
-                        <select class="form-control" @bind="VM.Venta.IdUsuarioCliente">
-                            @foreach (var cliente in VM.ListaCliente)
-                            {
-                                <option value="@cliente.Id">@cliente.Nombre</option>
-                            }
-                        </select>
-                        <label>Cliente</label>
+        <div class="row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="col-12">
+                        <EditForm Model="@VM">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h3 class="alert alert-info text-center">Información de venta</h3>
+                                </div>
+                                <div class="col-4">
+                                    <MatSelect FullWidth="true" Label="Selecciona un cliente" Outlined="true" TValue="int" @bind-Value="VM.Venta.IdUsuarioCliente">
+                                        <MatOption TValue="int" Value="-1"></MatOption>
+                                        @foreach (var opt in VM.ListaCliente)
+                                        {
+                                            <MatOption TValue="int" Value="opt.Id">@opt.Nombre</MatOption>
+                                        }
+                                    </MatSelect>
+                                </div>
+                                <div class="col-4">
+                                    <MatSelect FullWidth="true" Label="Selecciona un proveedor" Outlined="true" TValue="int" @bind-Value="VM.Venta.IdUsuarioProveedor">
+                                        <MatOption TValue="int" Value="-1"></MatOption>
+                                        @foreach (var opt in VM.ListaProveedor)
+                                        {
+                                            <MatOption TValue="int" Value="opt.Id">@opt.Nombre</MatOption>
+                                        }
+                                    </MatSelect>
+                                </div>
+                                <div class="col-4">
+                                    <MatDatePicker Label="Outlined" Outlined="true" TValue="DateTime" @bind-Value="VM.Venta.Fecha"></MatDatePicker>
+                                </div>
+                            </div>
+                        </EditForm>
+                        <hr />
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h4 class="alert alert-success text-center">Detalle de venta</h4>
+                            </div>
+                            <div class="col-12">
+                                @foreach (var detalle in VM.ListaDetalleVenta)
+                                {
+                                    <div class="row mb-3">
+                                        <div class="col-3">
+                                            <MatSelect FullWidth="true" Label="Selecciona un producto" Outlined="true" TValue="int" @bind-Value="detalle.IdProducto">
+                                                <MatOption TValue="int" Value="-1"></MatOption>
+                                                @foreach (var opt in VM.ListaProducto)
+                                                {
+                                                    <MatOption TValue="int" Value="opt.Id">@opt.Nombre</MatOption>
+                                                }
+                                            </MatSelect>
+                                        </div>
+                                        <div class="col-3">
+                                            <MatNumericUpDownField FullWidth="true" Label="Precio" DecimalPlaces=0 @bind-Value="detalle.Precio"></MatNumericUpDownField>
+                                        </div>
+                                        <div class="col-3">
+                                            <MatNumericUpDownField FullWidth="true" Label="Cantidad" @bind-Value="detalle.Cantidad"></MatNumericUpDownField>
+                                        </div>
+                                        <div class="col-3 d-flex justify-content-around align-items-center">
+                                            <PrimaryButton Text="Eliminar" OnClick="@(() => VM.EliminarDetalleVenta(detalle))"></PrimaryButton>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-3">
-                    <div class="form-floating">
-                        <select class="form-control" @bind="VM.Venta.IdUsuarioProveedor">
-                            @foreach (var proveedor in VM.ListaProveedor)
-                            {
-                                <option value="@proveedor.Id">@proveedor.Nombre</option>
-                            }
-                        </select>
-                        <label>Proveedor</label>
+                <div class="row">
+                    <div class="col-12">
+                        <PrimaryButton Text="Finalizar venta" OnClick="@(() => FinalizarVenta())"></PrimaryButton>
                     </div>
                 </div>
-
-
-                <div class="col-3">
-                    <div class="form-floating">
-                        <input class="form-control" disabled @bind="VM.Venta.Fecha" />
-
-                        <label>Fecha</label>
-                    </div>
-                </div>
-
-                <div class="col-3 d-flex justify-content-center align-items-center">
-                    <PrimaryButton Text="Nueva venta"></PrimaryButton>
-                </div>
-
             </div>
-        </EditForm>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="alert alert-info text-center">Agregar productos</h3>
+                        <EditForm Model="@VM">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <MatSelect FullWidth="true" Label="Selecciona un producto" Outlined="true" TValue="int" @bind-Value="VM.DetalleVenta.IdProducto">
+                                        <MatOption TValue="int" Value="-1"></MatOption>
+                                        @foreach (var opt in VM.ListaProducto)
+                                        {
+                                            <MatOption TValue="int" Value="opt.Id">@opt.Nombre</MatOption>
+                                        }
+                                    </MatSelect>
+                                </div>
 
+                                <div class="col-12 mb-3">
+                                    <MatNumericUpDownField FullWidth="true" Label="Precio" DecimalPlaces=0 @bind-Value="VM.DetalleVenta.Precio"></MatNumericUpDownField>
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <MatNumericUpDownField FullWidth="true" Label="Cantidad" @bind-Value="VM.DetalleVenta.Cantidad"></MatNumericUpDownField>
+                                </div>
+
+                                <div class="col-12">
+                                    <MatButton Unelevated="true" OnClick="VM.AgregarDetalle">Agregar</MatButton>
+                                </div>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
     </Content>
 </GlobalCenterContainer>
 
 @code {
     protected override async Task OnInitializedAsync()
     {
-        await VM.cargarUsuarios();
+        await VM.CargarUsuarios();
     }
 }

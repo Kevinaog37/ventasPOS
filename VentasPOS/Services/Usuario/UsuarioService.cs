@@ -1,10 +1,11 @@
 ﻿
-using System.Threading.Tasks;
-using System.Net.Http.Json;
-using VentasPOS.DTO.Auth;
-using System.Net.Http;
-using VentasPOS.DTO.Usuario;
+using System.Collections.ObjectModel;
 using System.Linq.Expressions;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using VentasPOS.DTO.Auth;
+using VentasPOS.DTO.Usuario;
 
 namespace VentasPOS.Services.Usuario
 {
@@ -17,19 +18,20 @@ namespace VentasPOS.Services.Usuario
             _http = http;
         }
 
-        public async Task<List<UsuarioListarDto>> Listar()
+        public async Task<ObservableCollection<UsuarioListarDto>> Listar()
         {
             try
             {
                 var usuarios = await _http.GetFromJsonAsync<IEnumerable<UsuarioListarDto>>("Usuarios");
-                return usuarios?.ToList() ?? new List<UsuarioListarDto>();
+                return new ObservableCollection<UsuarioListarDto>(usuarios ?? Enumerable.Empty<UsuarioListarDto>());
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return new List<UsuarioListarDto>();
+                Console.WriteLine($"Error al listar usuarios: {ex.Message}");
+                return new ObservableCollection<UsuarioListarDto>();
             }
         }
+
 
         public async Task<UsuarioMostrarDto> Mostrar(int id)
         {

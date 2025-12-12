@@ -5,12 +5,14 @@ using VentasPOS.Application.CasosUso.Auth;
 using VentasPOS.Application.CasosUso.Compras;
 using VentasPOS.Application.CasosUso.DetalleCompras;
 using VentasPOS.Application.CasosUso.DetalleVentas;
+using VentasPOS.Application.CasosUso.Productos;
 using VentasPOS.Application.CasosUso.Usuarios;
 using VentasPOS.Application.CasosUso.Ventas;
 using VentasPOS.Application.Interfaces.Auth;
 using VentasPOS.Application.Interfaces.Compras;
 using VentasPOS.Application.Interfaces.DetalleCompras;
 using VentasPOS.Application.Interfaces.DetalleVentas;
+using VentasPOS.Application.Interfaces.Producto;
 using VentasPOS.Application.Interfaces.Usuarios;
 using VentasPOS.Application.Interfaces.Ventas;
 using VentasPOS.Infraestructure.Repositories;
@@ -77,6 +79,11 @@ builder.Services.AddScoped<IInsertarDetalleCompras, InsertarDetalleCompras>();
 builder.Services.AddScoped<IListarDetalleCompras, ListarDetalleCompras>();
 builder.Services.AddScoped<IActualizarDetalleCompra, ActualizarDetalleCompras>();
 builder.Services.AddScoped<EliminarDetalleCompras>();
+
+// ===== DetalleCompras =====
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+builder.Services.AddScoped<IListarProductos, ListarProductos>();
+
 
 
 var app = builder.Build();

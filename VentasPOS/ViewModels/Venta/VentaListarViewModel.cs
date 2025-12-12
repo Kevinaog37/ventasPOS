@@ -1,4 +1,5 @@
-﻿using VentasPOS.DTO.Venta;
+﻿using System.Collections.ObjectModel;
+using VentasPOS.DTO.Venta;
 using VentasPOS.Services.Venta;
 
 namespace VentasPOS.ViewModels.Venta
@@ -6,7 +7,7 @@ namespace VentasPOS.ViewModels.Venta
     public class VentaListarViewModel
     {
         private readonly VentaService _ventaService;
-        public List<VentaListarDto> _listVentas = new();
+        public ObservableCollection<VentaListarDto> _listVentas = new();
 
         public VentaListarViewModel(VentaService ventaService)
         {

@@ -12,9 +12,9 @@
 
             <PrimaryButton Text="Iniciar sesión"></PrimaryButton>
 
-            @if(V)
+            @if(VM.mensaje != "")
             {
-                
+                <div class="mt-3 alert alert-danger">@VM.mensaje</div>
             }
         </MatCardContent>
     </EditForm>

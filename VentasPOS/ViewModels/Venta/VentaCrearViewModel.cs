@@ -1,49 +1,63 @@
-﻿using VentasPOS.Domain.Entities;
-using VentasPOS.DTO.Usuario;
+﻿using System.Collections.ObjectModel;
 using VentasPOS.DTO.Venta;
+using VentasPOS.DTO.Usuario;
 using VentasPOS.Services.Usuario;
 using VentasPOS.Services.Venta;
+using VentasPOS.DTO.DetalleVenta;
+using VentasPOS.DTO.Producto;
+using VentasPOS.Services.Producto;
 
 public class VentaCrearViewModel
 {
     private readonly VentaService _ventaService;
     private readonly UsuarioService _usuarioService;
+    private readonly ProductoService _ProductoService;
 
-    public List<UsuarioListarDto> ListaCliente = new();
-    public List<UsuarioListarDto> ListaProveedor = new();
-    public List<VentaListarDto> ListVentas = new();
+
+    public ObservableCollection<UsuarioListarDto> ListaCliente = new();
+    public ObservableCollection<UsuarioListarDto> ListaProveedor = new();
+    public ObservableCollection<ProductoListarDto> ListaProducto = new();
+
+    public ObservableCollection<DetalleVentaInsertarDto> ListaDetalleVenta = new();
+
     public VentaCrearDto Venta { get; set; } = new();
+    public DetalleVentaInsertarDto DetalleVenta { get; set; } = new();
 
-    public int ClienteSeleccionado { get; set; }
-    public int ProveedorSeleccionado { get; set; }
-
-    public VentaCrearViewModel(VentaService ventaService, UsuarioService usuarioService)
+    public VentaCrearViewModel(VentaService ventaService, UsuarioService usuarioService, ProductoService productoService)
     {
         _ventaService = ventaService;
         _usuarioService = usuarioService;
+        _ProductoService = productoService;
     }
 
-    public async Task cargarUsuarios()
+    public async Task CargarUsuarios()
     {
         ListaCliente = await _usuarioService.Listar();
         ListaProveedor = await _usuarioService.Listar();
+        ListaProducto = await _ProductoService.Listar();
     }
 
-    public async Task Listar()
+    public async Task AgregarDetalle()
     {
-        ListVentas = await _ventaService.Listar();
+
+        ListaDetalleVenta.Add(new DetalleVentaInsertarDto
+        {
+            IdProducto = DetalleVenta.IdProducto,
+            Cantidad = DetalleVenta.Cantidad,
+            Estado = DetalleVenta.Estado,
+            NombreProducto = DetalleVenta.NombreProducto,
+            Precio = DetalleVenta.Precio
+        });
     }
 
-    public async Task Guardar()
+    public void EliminarDetalleVenta(DetalleVentaInsertarDto detalleVenta)
     {
-        Console.WriteLine(Venta.ToString());
-        var res = await _ventaService.Insertar(Venta);
+        ListaDetalleVenta.Remove(detalleVenta);
+    }
 
-        if (res)
-        {
-        }
-        else
-        {
-        }
+    public async Task FinalizarVenta()
+    {
+        await _ventaService.Insertar(Venta);
+
     }
 }

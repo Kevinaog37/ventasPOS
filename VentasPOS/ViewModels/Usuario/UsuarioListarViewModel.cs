@@ -1,4 +1,5 @@
-﻿using VentasPOS.DTO.Usuario;
+﻿using System.Collections.ObjectModel;
+using VentasPOS.DTO.Usuario;
 using VentasPOS.Services.Usuario;
 using VentasPOS.Views.Usuarios;
 
@@ -7,7 +8,7 @@ namespace VentasPOS.ViewModels.Usuario
     public class UsuarioListarViewModel
     {
         private readonly UsuarioService _usuarioService;
-        public List<UsuarioListarDto> _listaUsuarios = new();
+        public ObservableCollection<UsuarioListarDto> _listaUsuarios = new();
 
         public UsuarioListarViewModel(UsuarioService usuarioService) {
             _usuarioService = usuarioService;

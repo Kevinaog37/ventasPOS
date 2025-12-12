@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using VentasPOS;
 using VentasPOS.Services.Auth;
+using VentasPOS.Services.Producto;
 using VentasPOS.Services.Usuario;
 using VentasPOS.Services.Venta;
 using VentasPOS.ViewModels.Auth;
@@ -36,6 +37,9 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<UsuarioService>();
 //Ventas
 builder.Services.AddScoped<VentaService>();
+//Productos
+builder.Services.AddScoped<ProductoService>();
+
 
 
 await builder.Build().RunAsync();

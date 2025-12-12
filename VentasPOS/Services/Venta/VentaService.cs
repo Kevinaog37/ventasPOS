@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Collections.ObjectModel;
+using System.Net.Http.Json;
 using VentasPOS.DTO.Venta;
 
 namespace VentasPOS.Services.Venta
@@ -12,17 +13,17 @@ namespace VentasPOS.Services.Venta
             _http = http;
         }
 
-        public async Task<List<VentaListarDto>> Listar()
+        public async Task<ObservableCollection<VentaListarDto>> Listar()
         {
             try
             {
                 var usuarios = await _http.GetFromJsonAsync<IEnumerable<VentaListarDto>>("Ventas");
-                return usuarios?.ToList() ?? new List<VentaListarDto>();
+                return new ObservableCollection<VentaListarDto>(usuarios ?? Enumerable.Empty<VentaListarDto>());
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return new List<VentaListarDto>();
+                return new ObservableCollection<VentaListarDto>();
             }
         }
 

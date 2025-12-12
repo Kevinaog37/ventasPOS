@@ -1,12 +1,13 @@
-﻿namespace VentasPOS.Domain.Entities
+﻿namespace VentasPOS.DTO.DetalleVenta
 {
-    public class DetalleVenta
+    public class DetalleVentaInsertarDto
     {
-        public int Id { get; set; }
         public int IdVenta { get; set; }
         public int IdProducto { get; set; }
-        public decimal Precio { get; set;}
+        public string NombreProducto { get; set; }
         public int Cantidad { get; set; }
+        public int Precio { get; set; }
         public int Estado { get; set; }
+
     }
 }
