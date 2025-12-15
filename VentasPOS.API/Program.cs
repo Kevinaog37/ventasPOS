@@ -1,5 +1,4 @@
-﻿using ComprasPOS.Infraestructure.Repositories;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
 using VentasPOS.Application.CasosUso.Auth;
 using VentasPOS.Application.CasosUso.Compras;
@@ -57,6 +56,7 @@ builder.Services.AddScoped<IActualizarVenta, ActualizarVenta>();
 builder.Services.AddScoped<IObtenerVenta, ObtenerVenta>();
 builder.Services.AddScoped<IListarVentas, ListarVentas>();
 builder.Services.AddScoped<IEliminarVenta, EliminarVenta>();
+builder.Services.AddScoped<IInsertarVentaDetalleVenta, InsertarVentaDetalleVenta>();
 
 // ===== Compras =====
 builder.Services.AddScoped<ICompraRepository, CompraRepository>();
@@ -79,8 +79,9 @@ builder.Services.AddScoped<IInsertarDetalleCompras, InsertarDetalleCompras>();
 builder.Services.AddScoped<IListarDetalleCompras, ListarDetalleCompras>();
 builder.Services.AddScoped<IActualizarDetalleCompra, ActualizarDetalleCompras>();
 builder.Services.AddScoped<EliminarDetalleCompras>();
+builder.Services.AddScoped<IInsertarCompraDetalleCompra, InsertarCompraDetalleCompra>();
 
-// ===== DetalleCompras =====
+// ===== Productos =====
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<IListarProductos, ListarProductos>();
 

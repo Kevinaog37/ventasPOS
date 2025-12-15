@@ -27,10 +27,16 @@ namespace VentasPOS.Services.Venta
             }
         }
 
-        public async Task<bool> Insertar(VentaCrearDto request)
+        public async Task<bool> Insertar(VentaDetalleVentaInsertarDto request)
         {
             var response = await _http.PostAsJsonAsync("Ventas", request);
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<VentaListarDto> ObtenerPorId(int Id)
+        {
+            var response = await _http.GetFromJsonAsync<VentaListarDto>($"Ventas/Mostrar/{Id}");
+            return response;
         }
     }
 }

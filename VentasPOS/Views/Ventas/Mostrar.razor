@@ -1,20 +1,19 @@
-﻿@page "/ventas/crear"
-@inject VentaCrearViewModel VM
+﻿@page "/ventas/mostrar"
+@page "/ventas/mostrar/{ventaId:int}"
+@inject VentaDetalleVentaListarViewModel VM
 @inject NavigationManager Nav
 
 <GlobalCenterContainer>
     <Content>
         <div class="row">
             <div class="col-8">
-                @if (VM.VentaCreada)
+                @if (VM.VentaEncontrada)
                 {
                     <div class="row">
                         <GlobalCard>
                             <Content>
                                 <div class="col-12 d-flex justify-content-center align-items-lg-center fs-1 flex-column">
-                                    <MatIcon Style="font-size: 10rem;">check_circle</MatIcon>
-                                    <div class="mb-3">Venta creada correctamente</div>
-                                    <PrimaryButton Text="Nueva venta" OnClick="NuevaVenta"></PrimaryButton>
+                                    <div class="alert alert-warning">No se ha encontrado la venta.</div>
                                 </div>
                             </Content>
                         </GlobalCard>
@@ -24,8 +23,6 @@
                 {
                     <div class="row">
                         <div class="col-12">
-
-
                             <EditForm Model="@VM">
                                 <div class="row">
                                     <div class="col-12">
@@ -40,15 +37,7 @@
                                             }
                                         </MatSelect>
                                     </div>
-                                    <div class="col-4">
-                                        <MatSelect FullWidth="true" Label="Selecciona un proveedor" Outlined="true" TValue="int" @bind-Value="VM.Venta.IdUsuarioProveedor">
-                                            <MatOption TValue="int" Value="-1"></MatOption>
-                                            @foreach (var opt in VM.ListaProveedor)
-                                            {
-                                                <MatOption TValue="int" Value="opt.Id">@opt.Nombre</MatOption>
-                                            }
-                                        </MatSelect>
-                                    </div>
+                                    
                                     <div class="col-4">
                                         <MatDatePicker Label="Outlined" Outlined="true" TValue="DateTime" @bind-Value="VM.Venta.Fecha"></MatDatePicker>
                                     </div>
@@ -131,22 +120,25 @@
 </GlobalCenterContainer>
 
 @code {
+    [Parameter]
+    public int? ventaId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await VM.CargarUsuarios();
+        await VM.CargarVenta(ventaId.Value);
+        Console.WriteLine("Ventas/Mostrar |" + VM.Venta.IdUsuarioProveedor);
     }
 
-    private async void FinalizarNuevaVenta()
+    private async Task FinalizarNuevaVenta()
     {
         await VM.FinalizarVenta();
-        StateHasChanged();
-        VM.LimpiarDatos();
+        await VM.LimpiarDatos();
     }
 
-    private void NuevaVenta()
+    private async Task NuevaVenta()
     {
-        VM.VentaCreada = false;
-        VM.LimpiarDatos();
-        StateHasChanged();
+        VM.VentaEncontrada = false;
+        await VM.LimpiarDatos();
     }
 }

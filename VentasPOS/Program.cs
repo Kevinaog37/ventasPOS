@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using VentasPOS;
 using VentasPOS.Services.Auth;
+using VentasPOS.Services.Compra;
 using VentasPOS.Services.Producto;
 using VentasPOS.Services.Usuario;
 using VentasPOS.Services.Venta;
@@ -16,7 +17,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7295/api/") });
-
 //[ViewModels]
 //Auth
 builder.Services.AddScoped<AuthViewModel>();
@@ -27,6 +27,12 @@ builder.Services.AddScoped<UsuarioEditarViewModel>();
 //Ventas 
 builder.Services.AddScoped<VentaListarViewModel>();
 builder.Services.AddScoped<VentaCrearViewModel>();
+builder.Services.AddScoped<VentaDetalleVentaListarViewModel>();
+
+
+//Ventas 
+builder.Services.AddScoped<CompraListarViewModel>();
+builder.Services.AddScoped<CompraCrearViewModel>();
 
 //[Services]
 //Auth
@@ -37,8 +43,11 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<UsuarioService>();
 //Ventas
 builder.Services.AddScoped<VentaService>();
+//Compras
+builder.Services.AddScoped<CompraService>();
 //Productos
 builder.Services.AddScoped<ProductoService>();
+
 
 
 

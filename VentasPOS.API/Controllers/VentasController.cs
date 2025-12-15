@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VentasPOS.Application.CasosUso.Usuarios;
 using VentasPOS.Application.CasosUso.Ventas;
+using VentasPOS.Application.DTO.Venta;
 using VentasPOS.Application.DTO.Ventas;
 using VentasPOS.Application.Interfaces.Ventas;
 
@@ -12,17 +13,19 @@ namespace VentasPOS.API.Controllers
     {
         private readonly IListarVentas _listarVentas;
         private readonly ICrearVenta _crearVenta;
+        private readonly IInsertarVentaDetalleVenta _insertarVentaDetalleVenta;
         private readonly IObtenerVenta _obtenerVenta;
         private readonly IActualizarVenta _actualizarVenta;
         private readonly IEliminarVenta _eliminarVenta;
 
-        public VentasController(IListarVentas listarVentas, ICrearVenta crearVenta, IObtenerVenta obtenerVenta, IActualizarVenta actualizarVenta, IEliminarVenta eliminarVenta)
+        public VentasController(IListarVentas listarVentas, ICrearVenta crearVenta, IObtenerVenta obtenerVenta, IActualizarVenta actualizarVenta, IEliminarVenta eliminarVenta, IInsertarVentaDetalleVenta insertarVentaDetalleVenta)
         {
             _listarVentas = listarVentas;
             _crearVenta = crearVenta;
             _obtenerVenta = obtenerVenta;
             _actualizarVenta = actualizarVenta;
             _eliminarVenta = eliminarVenta;
+            _insertarVentaDetalleVenta = insertarVentaDetalleVenta;
         }
 
         [HttpGet]
@@ -38,13 +41,20 @@ namespace VentasPOS.API.Controllers
             var res = await _obtenerVenta.Handle(id);
             return Ok(res);
         }
-        
+
         [HttpPost]
+        public async Task<IActionResult> Insertar([FromBody] VentaDetalleVentaInsertarDto ventaDetalleVenta)
+        {
+            var res = await _insertarVentaDetalleVenta.Handle(ventaDetalleVenta);
+            return Ok(res);
+        }
+
+        /*[HttpPost]
         public async Task<IActionResult> Crear([FromBody] VentaCrearDto venta)
         {
             var res = await _crearVenta.Handle(venta);
             return Ok(res);
-        }
+        }*/
 
         [HttpPatch("actualizar/{id}")]
         public async Task<IActionResult> Actualizar(int id, [FromBody] VentaActualizarDto dto)

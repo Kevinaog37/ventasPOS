@@ -13,15 +13,15 @@ public class VentaCrearViewModel
     private readonly UsuarioService _usuarioService;
     private readonly ProductoService _ProductoService;
 
-
     public ObservableCollection<UsuarioListarDto> ListaCliente = new();
     public ObservableCollection<UsuarioListarDto> ListaProveedor = new();
     public ObservableCollection<ProductoListarDto> ListaProducto = new();
-
     public ObservableCollection<DetalleVentaInsertarDto> ListaDetalleVenta = new();
 
-    public VentaCrearDto Venta { get; set; } = new();
-    public DetalleVentaInsertarDto DetalleVenta { get; set; } = new();
+    public VentaCrearDto Venta = new();
+    public DetalleVentaInsertarDto DetalleVenta = new();
+
+    public bool VentaCreada = false;
 
     public VentaCrearViewModel(VentaService ventaService, UsuarioService usuarioService, ProductoService productoService)
     {
@@ -37,9 +37,8 @@ public class VentaCrearViewModel
         ListaProducto = await _ProductoService.Listar();
     }
 
-    public async Task AgregarDetalle()
+    public void AgregarDetalle()
     {
-
         ListaDetalleVenta.Add(new DetalleVentaInsertarDto
         {
             IdProducto = DetalleVenta.IdProducto,
@@ -57,7 +56,25 @@ public class VentaCrearViewModel
 
     public async Task FinalizarVenta()
     {
-        await _ventaService.Insertar(Venta);
+        VentaDetalleVentaInsertarDto VentaInsertar = new VentaDetalleVentaInsertarDto
+        {
+            IdUsuarioCliente = Venta.IdUsuarioCliente,
+            IdUsuarioProveedor = Venta.IdUsuarioProveedor,
+            Estado = Venta.Estado,
+            Fecha = Venta.Fecha,
+            DetalleVenta = ListaDetalleVenta
+        };
+        if (await _ventaService.Insertar(VentaInsertar))
+        {
+            VentaCreada = true;
+        }
+    }
 
+    public void LimpiarDatos()
+    {
+        Venta = new();
+        DetalleVenta = new();
+        ListaDetalleVenta.Clear();
+        VentaCreada = false;
     }
 }

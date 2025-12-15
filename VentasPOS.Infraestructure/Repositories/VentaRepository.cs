@@ -1,13 +1,14 @@
-﻿using System.Data;
-using Dapper;
-using VentasPOS.Application.Interfaces.Ventas;
+﻿using Dapper;
+using System.Data;
+using VentasPOS.Application.DTO.Venta;
 using VentasPOS.Application.DTO.Ventas;
+using VentasPOS.Application.Interfaces.Ventas;
 using VentasPOS.Domain.Entities;
 
 
 namespace VentasPOS.Infraestructure.Repositories
 {
-    public class VentaRepository: IVentaRepository
+    public class VentaRepository : IVentaRepository
     {
         private readonly IDbConnection _db;
 
@@ -51,6 +52,37 @@ namespace VentasPOS.Infraestructure.Repositories
 
         }
 
+        public async Task<bool> InsertarVentaDetalleVenta(VentaDetalleVentaInsertarDto ventaDetalleVenta)
+        {
+            var response = await _db.ExecuteScalarAsync<int>("sp_InsertarVenta",
+                new
+                {
+                    IdUsuarioCliente = ventaDetalleVenta.IdUsuarioCliente,
+                    IdUsuarioProveedor = ventaDetalleVenta.IdUsuarioProveedor,
+                    Fecha = ventaDetalleVenta.Fecha,
+                    Estado = ventaDetalleVenta.Estado
+                },
+                commandType: CommandType.StoredProcedure);
+            Console.WriteLine(response.ToString());
+            if (response > 0)
+            {
+                foreach (var detalle in ventaDetalleVenta.DetalleVenta)
+                {
+                    await _db.ExecuteAsync("sp_InsertarDetalleVentas",
+                        new { 
+                            IdVenta = response, 
+                            IdProducto = detalle.IdProducto,
+                            Precio = detalle.Precio,
+                            Cantidad = detalle.Cantidad, 
+                            Estado = detalle.Estado}, 
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+            }
+
+            return response > 0;
+        }
+
         public async Task<Venta?> ObtenerPorId(int id)
         {
             var sql = $"EXEC dbo.sp_ObtenerVentaPorId {id}";
@@ -61,18 +93,17 @@ namespace VentasPOS.Infraestructure.Repositories
         {
             try
             {
-                var res = await _db.ExecuteAsync(
-                            "sp_ActualizarVenta",
-                                new
-                                {
-                                    venta.Id,
-                                    venta.IdUsuarioCliente,
-                                    venta.IdUsuarioProveedor,
-                                    venta.Fecha,
-                                    venta.Estado
-                                },
-                                commandType: CommandType.StoredProcedure
-                            );
+                var res = await _db.ExecuteAsync("sp_ActualizarVenta",
+                    new
+                    {
+                        venta.Id,
+                        venta.IdUsuarioCliente,
+                        venta.IdUsuarioProveedor,
+                        venta.Fecha,
+                        venta.Estado
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
                 return res > 0;
             }
             catch (Exception ex)

@@ -1,0 +1,22 @@
+﻿@using MatBlazor
+
+<MatDialogTitle>@Title</MatDialogTitle>
+
+<MatDialogContent>
+    @Message
+</MatDialogContent>
+
+<MatDialogActions>
+    <MatButton OnClick="Aceptar">Aceptar</MatButton>
+    <MatButton OnClick="Cancelar">Cancelar</MatButton>
+</MatDialogActions>
+
+@code {
+    [CascadingParameter] public MatDialogReference DialogRef { get; set; }
+
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Message { get; set; }
+
+    void Aceptar() => DialogRef.Close("OK");
+    void Cancelar() => DialogRef.Close("CANCEL");
+}

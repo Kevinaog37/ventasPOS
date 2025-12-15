@@ -1,20 +1,21 @@
-﻿@page "/ventas/crear"
-@inject VentaCrearViewModel VM
+﻿@page "/compras/crear"
+@using VentasPOS.DTO.DetalleCompra
+@inject CompraCrearViewModel VM
 @inject NavigationManager Nav
 
 <GlobalCenterContainer>
     <Content>
         <div class="row">
             <div class="col-8">
-                @if (VM.VentaCreada)
+                @if (VM.CompraCreada)
                 {
                     <div class="row">
                         <GlobalCard>
                             <Content>
                                 <div class="col-12 d-flex justify-content-center align-items-lg-center fs-1 flex-column">
                                     <MatIcon Style="font-size: 10rem;">check_circle</MatIcon>
-                                    <div class="mb-3">Venta creada correctamente</div>
-                                    <PrimaryButton Text="Nueva venta" OnClick="NuevaVenta"></PrimaryButton>
+                                    <div class="mb-3">Compra creada correctamente</div>
+                                    <PrimaryButton Text="Nueva Compra" OnClick="NuevaCompra"></PrimaryButton>
                                 </div>
                             </Content>
                         </GlobalCard>
@@ -24,24 +25,22 @@
                 {
                     <div class="row">
                         <div class="col-12">
-
-
                             <EditForm Model="@VM">
                                 <div class="row">
                                     <div class="col-12">
-                                        <h3 class="alert alert-info text-center">Información de venta</h3>
+                                        <h3 class="alert alert-info text-center">Información de compra</h3>
                                     </div>
                                     <div class="col-4">
-                                        <MatSelect FullWidth="true" Label="Selecciona un cliente" Outlined="true" TValue="int" @bind-Value="VM.Venta.IdUsuarioCliente">
+                                        <MatSelect FullWidth="true" Label="Selecciona un vendedor" Outlined="true" TValue="int" @bind-Value="VM.Compra.IdUsuarioVendedor">
                                             <MatOption TValue="int" Value="-1"></MatOption>
-                                            @foreach (var opt in VM.ListaCliente)
+                                            @foreach (var opt in VM.ListaVendedor)
                                             {
                                                 <MatOption TValue="int" Value="opt.Id">@opt.Nombre</MatOption>
                                             }
                                         </MatSelect>
                                     </div>
                                     <div class="col-4">
-                                        <MatSelect FullWidth="true" Label="Selecciona un proveedor" Outlined="true" TValue="int" @bind-Value="VM.Venta.IdUsuarioProveedor">
+                                        <MatSelect FullWidth="true" Label="Selecciona un proveedor" Outlined="true" TValue="int" @bind-Value="VM.Compra.IdUsuarioProveedor">
                                             <MatOption TValue="int" Value="-1"></MatOption>
                                             @foreach (var opt in VM.ListaProveedor)
                                             {
@@ -50,17 +49,17 @@
                                         </MatSelect>
                                     </div>
                                     <div class="col-4">
-                                        <MatDatePicker Label="Outlined" Outlined="true" TValue="DateTime" @bind-Value="VM.Venta.Fecha"></MatDatePicker>
+                                        <MatDatePicker Label="Outlined" Outlined="true" TValue="DateTime" @bind-Value="VM.Compra.Fecha"></MatDatePicker>
                                     </div>
                                 </div>
                             </EditForm>
                             <hr />
                             <div class="row mt-3">
                                 <div class="col-12">
-                                    <h4 class="alert alert-success text-center">Detalle de venta</h4>
+                                    <h4 class="alert alert-success text-center">Detalle de compra</h4>
                                 </div>
                                 <div class="col-12">
-                                    @foreach (var detalle in VM.ListaDetalleVenta)
+                                    @foreach (var detalle in VM.ListaDetalleCompra)
                                     {
                                         <div class="row mb-3">
                                             <div class="col-3">
@@ -79,7 +78,7 @@
                                                 <MatNumericUpDownField FullWidth="true" Label="Cantidad" @bind-Value="detalle.Cantidad"></MatNumericUpDownField>
                                             </div>
                                             <div class="col-3 d-flex justify-content-around align-items-center">
-                                                <PrimaryButton Text="Eliminar" OnClick="@(() => VM.EliminarDetalleVenta(detalle))"></PrimaryButton>
+                                                <PrimaryButton Text="Eliminar" OnClick="@(() => VM.EliminarDetalleCompra(detalle))"></PrimaryButton>
                                             </div>
                                         </div>
                                     }
@@ -89,7 +88,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <PrimaryButton Text="Finalizar venta" OnClick="@FinalizarNuevaVenta"></PrimaryButton>
+                            <PrimaryButton Text="Finalizar Compra" OnClick="@FinalizarNuevaCompra"></PrimaryButton>
                         </div>
                     </div>
                 }
@@ -101,7 +100,7 @@
                         <EditForm Model="@VM">
                             <div class="row">
                                 <div class="col-12 mb-3">
-                                    <MatSelect FullWidth="true" Label="Selecciona un producto" Outlined="true" TValue="int" @bind-Value="VM.DetalleVenta.IdProducto">
+                                    <MatSelect FullWidth="true" Label="Selecciona un producto" Outlined="true" TValue="int" @bind-Value="VM.DetalleCompra.IdProducto">
                                         <MatOption TValue="int" Value="-1"></MatOption>
                                         @foreach (var opt in VM.ListaProducto)
                                         {
@@ -111,11 +110,11 @@
                                 </div>
 
                                 <div class="col-12 mb-3">
-                                    <MatNumericUpDownField FullWidth="true" Label="Precio" DecimalPlaces=0 @bind-Value="VM.DetalleVenta.Precio"></MatNumericUpDownField>
+                                    <MatNumericUpDownField FullWidth="true" Label="Precio" DecimalPlaces=0 @bind-Value="VM.DetalleCompra.Precio"></MatNumericUpDownField>
                                 </div>
 
                                 <div class="col-12 mb-3">
-                                    <MatNumericUpDownField FullWidth="true" Label="Cantidad" @bind-Value="VM.DetalleVenta.Cantidad"></MatNumericUpDownField>
+                                    <MatNumericUpDownField FullWidth="true" Label="Cantidad" @bind-Value="VM.DetalleCompra.Cantidad"></MatNumericUpDownField>
                                 </div>
 
                                 <div class="col-12">
@@ -136,16 +135,16 @@
         await VM.CargarUsuarios();
     }
 
-    private async void FinalizarNuevaVenta()
+    private async void FinalizarNuevaCompra()
     {
-        await VM.FinalizarVenta();
+        await VM.FinalizarCompra();
         StateHasChanged();
         VM.LimpiarDatos();
     }
 
-    private void NuevaVenta()
+    private void NuevaCompra()
     {
-        VM.VentaCreada = false;
+        VM.CompraCreada = false;
         VM.LimpiarDatos();
         StateHasChanged();
     }

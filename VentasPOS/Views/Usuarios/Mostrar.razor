@@ -7,7 +7,6 @@
     <Content>
         @if (VM.Usuario.Id != null)
         {
-
             <h3 class="text-center"><span class="me-3">Actualizar usuario</span><PrimaryButton Text="Ver listado" OnClick="@(() => Nav.NavigateTo("/usuarios"))"></PrimaryButton></h3>
 
             <EditForm Model="@VM" OnValidSubmit="@usuarioActualizar">
@@ -32,7 +31,6 @@
                             Actualizar
                         </MatButton>
                     </div>
-
 
                     @if (VM.Alerta == "1")
                     {

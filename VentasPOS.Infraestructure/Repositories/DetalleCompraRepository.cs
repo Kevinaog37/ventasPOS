@@ -30,7 +30,6 @@ namespace VentasPOS.Infraestructure.Repositories
                 IdProducto = detalleCompra.IdProducto,
                 Precio = detalleCompra.Precio,
                 Cantidad = detalleCompra.Cantidad,
-                Fecha = detalleCompra.Fecha,
                 Estado = detalleCompra.Estado
             }, commandType: CommandType.StoredProcedure);
             return response;
@@ -38,7 +37,7 @@ namespace VentasPOS.Infraestructure.Repositories
 
         public async Task<bool> Actualizar(int Id, DetalleComprasActualizarDto detalleCompra)
         {
-            var response = await _db.ExecuteAsync("sp_ActualizarDetalleCompras", new { Id = Id, IdProducto = detalleCompra.IdProducto, Precio = detalleCompra.Precio, Cantidad = detalleCompra.Cantidad, Fecha = detalleCompra.Fecha, Estado = detalleCompra.Estado }, commandType: CommandType.StoredProcedure);
+            var response = await _db.ExecuteAsync("sp_ActualizarDetalleCompras", new { Id = Id, IdProducto = detalleCompra.IdProducto, Precio = detalleCompra.Precio, Cantidad = detalleCompra.Cantidad, Estado = detalleCompra.Estado }, commandType: CommandType.StoredProcedure);
             return response > 0;
         }
 

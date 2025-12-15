@@ -11,17 +11,19 @@ namespace ComprasPOS.API.Controllers
     {
         private readonly IListarCompras _listarCompras;
         private readonly ICrearCompra _crearCompra;
+        private readonly IInsertarCompraDetalleCompra _insertarCompraDetalleCompra;
         private readonly IObtenerCompra _obtenerCompra;
         private readonly IActualizarCompra _actualizarCompra;
         private readonly IEliminarCompra _eliminarCompra;
 
-        public ComprasController(IListarCompras listarCompras, ICrearCompra crearCompra, IObtenerCompra obtenerCompra, IActualizarCompra actualizarCompra, IEliminarCompra eliminarCompra)
+        public ComprasController(IListarCompras listarCompras, ICrearCompra crearCompra, IObtenerCompra obtenerCompra, IActualizarCompra actualizarCompra, IEliminarCompra eliminarCompra, IInsertarCompraDetalleCompra insertarCompraDetalleCompra)
         {
             _listarCompras = listarCompras;
             _crearCompra = crearCompra;
             _obtenerCompra = obtenerCompra;
             _actualizarCompra = actualizarCompra;
             _eliminarCompra = eliminarCompra;
+            _insertarCompraDetalleCompra = insertarCompraDetalleCompra;
         }
 
         [HttpGet]
@@ -40,9 +42,9 @@ namespace ComprasPOS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Crear([FromBody] CompraCrearDto venta)
+        public async Task<IActionResult> Insertar([FromBody] CompraDetalleCompraInsertarDto compra)
         {
-            var res = await _crearCompra.Handle(venta);
+            var res = await _insertarCompraDetalleCompra.Handle(compra);
             return Ok(res);
         }
 

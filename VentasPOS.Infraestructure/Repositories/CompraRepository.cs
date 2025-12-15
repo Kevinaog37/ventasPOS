@@ -5,7 +5,7 @@ using VentasPOS.Application.Interfaces.Compras;
 using VentasPOS.Domain.Entities;
 
 
-namespace ComprasPOS.Infraestructure.Repositories
+namespace VentasPOS.Infraestructure.Repositories
 {
     public class CompraRepository : ICompraRepository
     {
@@ -32,16 +32,16 @@ namespace ComprasPOS.Infraestructure.Repositories
             try
             {
                 return await _db.ExecuteScalarAsync<int>(
-                        "sp_InsertarCompra",
-                            new
-                            {
-                                compra.IdUsuarioVendedor,
-                                compra.IdUsuarioProveedor,
-                                compra.Fecha,
-                                compra.Estado
-                            },
-                            commandType: CommandType.StoredProcedure
-                        );
+                "sp_InsertarCompra",
+                    new
+                    {
+                        compra.IdUsuarioVendedor,
+                        compra.IdUsuarioProveedor,
+                        compra.Fecha,
+                        compra.Estado
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
             }
             catch (Exception ex)
             {
@@ -49,6 +49,40 @@ namespace ComprasPOS.Infraestructure.Repositories
                 return -1;
             }
 
+        }
+
+        public async Task<bool> InsertarCompraDetalleCompra(CompraDetalleCompraInsertarDto compraDetalleCompra)
+        {
+            var response = await _db.ExecuteScalarAsync<int>("sp_InsertarCompra",
+                new
+                {
+                    IdUsuarioVendedor = compraDetalleCompra.IdUsuarioVendedor,
+                    IdUsuarioProveedor = compraDetalleCompra.IdUsuarioProveedor,
+                    Fecha = compraDetalleCompra.Fecha,
+                    Estado = compraDetalleCompra.Estado
+                },
+                commandType: CommandType.StoredProcedure);
+
+            Console.WriteLine("CompraRepository | Detalles de compra: " + compraDetalleCompra.DetalleCompra.Count);
+
+            if (response > 0)
+            {
+                foreach (var detalle in compraDetalleCompra.DetalleCompra)
+                {
+                    var response2 = await _db.ExecuteAsync("sp_InsertarDetalleCompra",
+                        new
+                        {
+                            IdCompra = response,
+                            detalle.IdProducto,
+                            detalle.Precio,
+                            detalle.Cantidad,
+                            detalle.Estado
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+            }
+            return response > 0;
         }
 
         public async Task<Compra?> ObtenerPorId(int id)
@@ -62,17 +96,17 @@ namespace ComprasPOS.Infraestructure.Repositories
             try
             {
                 var res = await _db.ExecuteAsync(
-                            "sp_ActualizarCompra",
-                                new
-                                {
-                                    compra.Id,
-                                    compra.IdUsuarioVendedor,
-                                    compra.IdUsuarioProveedor,
-                                    compra.Fecha,
-                                    compra.Estado
-                                },
-                                commandType: CommandType.StoredProcedure
-                            );
+                "sp_ActualizarCompra",
+                    new
+                    {
+                        compra.Id,
+                        compra.IdUsuarioVendedor,
+                        compra.IdUsuarioProveedor,
+                        compra.Fecha,
+                        compra.Estado
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
                 return res > 0;
             }
             catch (Exception ex)

@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using VentasPOS.DTO.Auth;
+﻿using VentasPOS.DTO.Auth;
 using VentasPOS.Services.Auth;
 
 namespace VentasPOS.ViewModels.Auth
@@ -32,7 +31,6 @@ namespace VentasPOS.ViewModels.Auth
                 mensaje = "Correo o contraseña incorrectos.";
             }
 
-                
             return response;
         }
     }
