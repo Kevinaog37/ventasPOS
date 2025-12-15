@@ -32,24 +32,32 @@ namespace VentasPOS.Infraestructure.Repositories
         public async Task<int> Insertar(DetalleVentaInsertarDto detalleVenta)
         {
             var response = await _db.ExecuteScalarAsync<int>("sp_InsertarDetalleVentas",
-                                                            new
-                                                            {
-                                                                IdVenta = detalleVenta.IdVenta,
-                                                                IdProducto = detalleVenta.IdProducto,
-                                                                Cantidad = detalleVenta.Cantidad,
-                                                                Estado = detalleVenta.Estado
-                                                            }, commandType: CommandType.StoredProcedure);
+                new
+                {
+                    IdVenta = detalleVenta.IdVenta,
+                    IdProducto = detalleVenta.IdProducto,
+                    Precio = detalleVenta.Precio,
+                    Cantidad = detalleVenta.Cantidad,
+                    Estado = detalleVenta.Estado
+                }, commandType: CommandType.StoredProcedure);
 
             return response;
         }
 
         public async Task<bool> Actualizar(int id, DetalleVentaActualizarDto detalleVenta)
         {
-            var response = await _db.ExecuteAsync("sp_ActualizarDetalleVentas", new { Id = id, 
-                                                                                      IdProducto = detalleVenta.IdProducto, Cantidad = detalleVenta.Cantidad,
-                                                                                      Estado = detalleVenta.Estado }, 
-                                                                                      commandType: CommandType.StoredProcedure
-                                                                                      );
+            Console.WriteLine("Dep: " + detalleVenta.Cantidad +  " Precio: " + detalleVenta.Precio);
+            var response = await _db.ExecuteAsync("sp_ActualizarDetalleVentas", 
+                new
+                { 
+                    Id = id, 
+                    IdProducto = detalleVenta.IdProducto, 
+                    Precio = detalleVenta.Precio,
+                    Cantidad = detalleVenta.Cantidad,
+                    Estado = detalleVenta.Estado 
+                }, 
+               commandType: CommandType.StoredProcedure
+            );
             return response > 0;
         }
 

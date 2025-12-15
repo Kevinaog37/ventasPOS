@@ -29,15 +29,30 @@
                                         <h3 class="alert alert-info text-center">Información de venta</h3>
                                     </div>
                                     <div class="col-4">
-                                        <MatSelect FullWidth="true" Label="Selecciona un cliente" Outlined="true" TValue="int" @bind-Value="VM.Venta.IdUsuarioCliente">
-                                            <MatOption TValue="int" Value="-1"></MatOption>
-                                            @foreach (var opt in VM.ListaCliente)
-                                            {
-                                                <MatOption TValue="int" Value="opt.Id">@opt.Nombre</MatOption>
-                                            }
-                                        </MatSelect>
+                                        
+                                        @if (VM.ListaCliente?.Any() == true)
+                                        {
+                                            <MatSelect FullWidth="true" Label="Selecciona un cliente" Outlined="true" TValue="int" @bind-Value="VM.Venta.IdUsuarioCliente">
+                                                <MatOption TValue="int" Value="-1"></MatOption>
+                                                @foreach (var opt in VM.ListaCliente)
+                                                {
+                                                    <MatOption TValue="int" Value="opt.Id">@opt.Nombre</MatOption>
+                                                }
+                                            </MatSelect>
+                                        }
                                     </div>
-                                    
+                                    <div class="col-4">
+                                        @if (VM.ListaProveedor?.Any() == true)
+                                        {
+                                            <MatSelect FullWidth="true" Label="Selecciona un proveedor" Outlined="true" TValue="int" @bind-Value="VM.Venta.IdUsuarioProveedor">
+                                                <MatOption TValue="int" Value="-1"></MatOption>
+                                                @foreach (var opt in VM.ListaProveedor)
+                                                {
+                                                    <MatOption TValue="int" Value="opt.Id">@opt.Nombre</MatOption>
+                                                }
+                                            </MatSelect>
+                                        }
+                                    </div>
                                     <div class="col-4">
                                         <MatDatePicker Label="Outlined" Outlined="true" TValue="DateTime" @bind-Value="VM.Venta.Fecha"></MatDatePicker>
                                     </div>
@@ -68,6 +83,7 @@
                                                 <MatNumericUpDownField FullWidth="true" Label="Cantidad" @bind-Value="detalle.Cantidad"></MatNumericUpDownField>
                                             </div>
                                             <div class="col-3 d-flex justify-content-around align-items-center">
+                                                <PrimaryButton Text="Actualizar" OnClick="@(() => VM.ActualizarDetalleVenta(detalle))"></PrimaryButton>
                                                 <PrimaryButton Text="Eliminar" OnClick="@(() => VM.EliminarDetalleVenta(detalle))"></PrimaryButton>
                                             </div>
                                         </div>
@@ -78,7 +94,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <PrimaryButton Text="Finalizar venta" OnClick="@FinalizarNuevaVenta"></PrimaryButton>
+                            <PrimaryButton Text="Finalizar venta"></PrimaryButton>
                         </div>
                     </div>
                 }
@@ -108,7 +124,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <MatButton Unelevated="true" OnClick="VM.AgregarDetalle">Agregar</MatButton>
+                                    <MatButton Unelevated="true" OnClick="@(() => VM.AgregarDetalle(ventaId))">Agregar</MatButton>
                                 </div>
                             </div>
                         </EditForm>
@@ -125,15 +141,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await VM.LimpiarDatos();
         await VM.CargarUsuarios();
         await VM.CargarVenta(ventaId.Value);
         Console.WriteLine("Ventas/Mostrar |" + VM.Venta.IdUsuarioProveedor);
-    }
-
-    private async Task FinalizarNuevaVenta()
-    {
-        await VM.FinalizarVenta();
-        await VM.LimpiarDatos();
     }
 
     private async Task NuevaVenta()

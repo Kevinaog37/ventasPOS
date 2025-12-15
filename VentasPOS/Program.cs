@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using VentasPOS;
 using VentasPOS.Services.Auth;
 using VentasPOS.Services.Compra;
+using VentasPOS.Services.DetalleVenta;
 using VentasPOS.Services.Producto;
 using VentasPOS.Services.Usuario;
 using VentasPOS.Services.Venta;
@@ -47,6 +48,9 @@ builder.Services.AddScoped<VentaService>();
 builder.Services.AddScoped<CompraService>();
 //Productos
 builder.Services.AddScoped<ProductoService>();
+//DetalleVentas
+builder.Services.AddScoped<DetalleVentaService>();
+
 
 
 

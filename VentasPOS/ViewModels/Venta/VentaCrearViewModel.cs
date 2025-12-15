@@ -44,7 +44,6 @@ public class VentaCrearViewModel
             IdProducto = DetalleVenta.IdProducto,
             Cantidad = DetalleVenta.Cantidad,
             Estado = DetalleVenta.Estado,
-            NombreProducto = DetalleVenta.NombreProducto,
             Precio = DetalleVenta.Precio
         });
     }

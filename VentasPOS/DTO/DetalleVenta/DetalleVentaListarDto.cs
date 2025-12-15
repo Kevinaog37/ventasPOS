@@ -1,7 +1,8 @@
 ﻿namespace VentasPOS.DTO.DetalleVenta
 {
-    public class DetalleVentaInsertarDto
+    public class DetalleVentaListarDto
     {
+        public int Id { get; set; }
         public int IdVenta { get; set; }
         public int IdProducto { get; set; }
         public int Cantidad { get; set; }

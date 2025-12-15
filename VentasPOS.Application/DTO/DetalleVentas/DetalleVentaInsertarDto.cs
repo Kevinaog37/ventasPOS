@@ -5,7 +5,7 @@
         public int IdVenta { get; set; }
         public int IdProducto { get; set; }
         public int Cantidad { get; set; }
-        public int Precio { get; set; }
+        public decimal Precio { get; set; }
         public int Estado { get; set; }
 
     }

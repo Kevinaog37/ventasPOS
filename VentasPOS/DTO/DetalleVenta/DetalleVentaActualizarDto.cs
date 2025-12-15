@@ -1,4 +1,4 @@
-﻿namespace VentasPOS.Application.DTO.DetalleVentas
+﻿namespace VentasPOS.DTO.DetalleVenta
 {
     public class DetalleVentaActualizarDto
     {

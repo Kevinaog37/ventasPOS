@@ -22,7 +22,7 @@ namespace VentasPOS.API.Controllers
             _eliminarDetalleVentas = eliminarDetalleVentas;
         }
 
-        [HttpGet]
+        [HttpGet("{IdVenta}")]
         public async Task<IEnumerable<DetalleVentasListarDto>> Listar(int? IdVenta)
         {
             var result = await _listarDetalleVentas.Handle(IdVenta);
@@ -35,10 +35,10 @@ namespace VentasPOS.API.Controllers
             return Ok(await _insertarDetalleVentas.Handle(detalleVenta));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] DetalleVentaActualizarDto detalleVenta)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> Put(int Id, [FromBody] DetalleVentaActualizarDto detalleVenta)
         {
-            var response = await _actualizarDetalleVentas.Handle(id, detalleVenta);
+            var response = await _actualizarDetalleVentas.Handle(Id, detalleVenta);
             return Ok(response);
         }
 

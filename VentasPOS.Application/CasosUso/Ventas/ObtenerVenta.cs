@@ -18,7 +18,6 @@ namespace VentasPOS.Application.CasosUso.Usuarios
             try
             {
                 var venta = await _repo.ObtenerPorId(id);
-                Console.WriteLine("La venta es: " + venta.Id + " | Fecha: " + venta.Fecha);
                 return res = new VentaMostrarDto { IdUsuarioCliente = venta.IdUsuarioCliente, IdUsuarioProveedor = venta.IdUsuarioProveedor, Estado = venta.Estado, Fecha = venta.Fecha};
 
             }
